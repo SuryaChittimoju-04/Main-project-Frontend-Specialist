@@ -9,7 +9,7 @@ import auth from './store/auth/actions';
 const App = () => {
   const dispatch = useDispatch();
   // const user = useSelector((state) => state.auth.userData);
-  const doctor = window.localStorage.getItem("doctorId");
+  const doctor = window.localStorage.getItem("userId");
   const [userData, setUserData] = useState(doctor);
   useEffect(() => {
     if (doctor) {
@@ -24,7 +24,8 @@ const App = () => {
   const handleLogout = () => {
     setUserData(null);
     window.localStorage.removeItem("userName");
-    window.localStorage.removeItem("doctorId");
+    window.localStorage.removeItem("userId");
+    window.localStorage.removeItem("isDoc");
   };
 
   return (

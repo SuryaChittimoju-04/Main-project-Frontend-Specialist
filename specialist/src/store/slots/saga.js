@@ -6,7 +6,7 @@ import { apiFetchAvailableSlots, apiFetchSlots, apiHistoryList } from '../../lib
 function* fetchSlotsSaga({ apiClient }) {
   try {
     // Make the API call using the apiClient
-    const doctorId = window.localStorage.getItem("doctorId");
+    const doctorId = window.localStorage.getItem("userId");
     const response = yield call([apiClient, apiClient.makeRequest], apiFetchSlots, 'GET', {
       doctorId: doctorId,
     });
@@ -38,7 +38,7 @@ function* fetchAvailableSlots({ apiClient }, { payload }) {
 
 function* fetchHistorySaga({ apiClient }) {
   try {
-    const doctorId = window.localStorage.getItem("doctorId");
+    const doctorId = window.localStorage.getItem("userId");
     const response = yield call([apiClient, apiClient.makeRequest], apiHistoryList, 'GET', {
       doctorId: doctorId,
     });

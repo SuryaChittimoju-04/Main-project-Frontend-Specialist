@@ -8,14 +8,16 @@ function* loginSaga({ apiClient }, { payload }) {
     const userData = yield call([apiClient, apiClient.makeRequest], apiLogin, 'POST', {
       email: payload.email,
       password: payload.password,
-      hospitalId: payload.hospitalId
+      managementId: payload.managementId,
+      isDoc: payload.isDoc,
     });
     const response = userData.data;
     if (response.statusCode === 200) {
       const res = { "statusCode": response.statusCode, "data": response.data };
       yield put(loginSuccess(res));
       window.localStorage.setItem("userName", response.data.name);
-      window.localStorage.setItem("doctorId",response.data.id);
+      window.localStorage.setItem("userId",response.data.id);
+      window.localStorage.setItem("isDoc",response.data.isDoc);
     } else {
       yield put(loginFailure(response.message));
     }
@@ -59,7 +61,8 @@ function* signupRequestSaga({ apiClient }, { payload }) {
       const res = { "statusCode": response.statusCode, "data": response.data };
       yield put(signupSuccess(res));
       window.localStorage.setItem("userName", response.data.name);
-      window.localStorage.setItem("doctorId",response.data.id);
+      window.localStorage.setItem("userId",response.data.id);
+      window.localStorage.setItem("isDoc",response.data.isDoc);
     } else {
       yield put(signupFailure(response.message));
     }

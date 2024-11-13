@@ -1,20 +1,24 @@
 /*eslint-disable*/
 // src/components/auth/LoginForm.jsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Card from '../ui/Card';
 import Button from '../ui/Button';
 import Input from '../ui/Input';
 import { useNavigate } from 'react-router-dom';
 
-export const LoginForm = ({ onLogin }) => {
+export const LoginForm = ({ onLogin, onLabLogin }) => {
+  const [isDoc, setIsDoc] = useState(true);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    hospitalId: ''
+    managementId: '',
+    isDoc: true,
   });
-  const [error, setError] = useState('');
-  const navigate = useNavigate();
-
+  useEffect(() => {
+    setFormData({ ...formData, isDoc: isDoc });
+  }, [isDoc]);
   const handleSubmit = (e) => {
     e.preventDefault();
     onLogin(formData);
@@ -23,13 +27,18 @@ export const LoginForm = ({ onLogin }) => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-white">
       <Card className="w-96 p-6">
-        <h1 className="text-2xl font-bold text-center mb-6">Doctor Login</h1>
+        <h1 className="text-2xl font-bold text-center mb-6">{isDoc ? 'Doctor' : 'LabSpecialist'} Login</h1>
+        <div className='flex justify-end mb-6'>
+          <Button type='button' onClick={() => {
+            setIsDoc(!isDoc);
+          }} >Switch</Button>
+        </div>
         <form onSubmit={handleSubmit} className="space-y-4 flex flex-col">
           <Input
             type="text"
-            placeholder="Enter Hospital ID"
-            value={formData.hospitalId}
-            onChange={(e) => setFormData({ ...formData, hospitalId: e.target.value })}
+            placeholder={`Enter ${isDoc ? 'Hospital' : 'Lab'} ID`}
+            value={formData.managementId}
+            onChange={(e) => setFormData({ ...formData, managementId: e.target.value })}
           />
           {error && <p className="text-red-500 text-sm">{error}</p>}
           <Input
