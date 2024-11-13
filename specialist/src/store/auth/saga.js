@@ -15,6 +15,7 @@ function* loginSaga({ apiClient }, { payload }) {
       const res = { "statusCode": response.statusCode, "data": response.data };
       yield put(loginSuccess(res));
       window.localStorage.setItem("userName", response.data.name);
+      window.localStorage.setItem("doctorId",response.data.id);
     } else {
       yield put(loginFailure(response.message));
     }
@@ -25,34 +26,40 @@ function* loginSaga({ apiClient }, { payload }) {
 }
 
 function* signupRequestSaga({ apiClient }, { payload }) {
-  function age(dateOfBirth) {
-    const dob = new Date(dateOfBirth);
-    const today = new Date();
+  // function age(dateOfBirth) {
+  //   const dob = new Date(dateOfBirth);
+  //   const today = new Date();
 
-    let age = today.getFullYear() - dob.getFullYear();
-    const monthDifference = today.getMonth() - dob.getMonth();
-    const dayDifference = today.getDate() - dob.getDate();
+  //   let age = today.getFullYear() - dob.getFullYear();
+  //   const monthDifference = today.getMonth() - dob.getMonth();
+  //   const dayDifference = today.getDate() - dob.getDate();
 
-    // Adjust if the birth date hasn't occurred yet this year
-    if (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)) {
-      age--;
-    }
+  //   // Adjust if the birth date hasn't occurred yet this year
+  //   if (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)) {
+  //     age--;
+  //   }
 
-    return age;
-  }
+  //   return age;
+  // }
 
   try {
     const response = yield call([apiClient, apiClient.makeRequest], apiSignUp, 'POST', {
-      aadharNumber: payload.aadhar,
-      patientPhNumber: payload.phone,
-      patientEmail: payload.email,
-      patientName: payload.name,
-      patientAge: age(payload.dob),
-      patientGender: payload.gender,
+      hospitalId: payload.hospitalId,
+      name: payload.name,
+      password: payload.password,
+      email: payload.email,
+      phoneNumber: payload.phone,
+      gender: payload.gender,
+      specialization: payload.specialization,
+      isAffiliated: payload.isAffiliated,
+      labs: [],
     });
-    if (response.ok) {
-      const res = { "statusCode": response.data?.statusCode, "data": response.data?.data };
+    const responseData = response.data;
+    if (responseData.statusCode === 200) {
+      const res = { "statusCode": response.statusCode, "data": response.data };
       yield put(signupSuccess(res));
+      window.localStorage.setItem("userName", response.data.name);
+      window.localStorage.setItem("doctorId",response.data.id);
     } else {
       yield put(signupFailure(response.message));
     }

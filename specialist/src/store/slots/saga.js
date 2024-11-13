@@ -6,7 +6,10 @@ import { apiFetchAvailableSlots, apiFetchSlots, apiHistoryList } from '../../lib
 function* fetchSlotsSaga({ apiClient }) {
   try {
     // Make the API call using the apiClient
-    const response = yield call([apiClient, apiClient.makeRequest], apiFetchSlots);
+    const doctorId = window.localStorage.getItem("doctorId");
+    const response = yield call([apiClient, apiClient.makeRequest], apiFetchSlots, 'GET', {
+      doctorId: doctorId,
+    });
 
     if (response.ok) {  // Check if the response is successful
       yield put(fetchSlotsSuccess(response.data));
@@ -19,29 +22,32 @@ function* fetchSlotsSaga({ apiClient }) {
   }
 }
 
-function* fetchAvailableSlots({apiClient},{payload}){
-  try{
+function* fetchAvailableSlots({ apiClient }, { payload }) {
+  try {
     const response = yield call([apiClient, apiClient.makeRequest], apiFetchAvailableSlots(payload));
-    if(response.ok){
+    if (response.ok) {
       yield put(fetchAvailableSlotsSuccess(response.data));
-    }else{
+    } else {
       throw new Error(response.problem || 'Failed to fetch slots data');
     }
-  } catch (error){
+  } catch (error) {
     console.error("Error occurred while fetching slots:", error.message);
     yield put(fetchAvailableSlotsFailure(error.message));
   }
 }
 
-function* fetchHistorySaga({apiClient}){
-  try{
-    const response = yield call([apiClient, apiClient.makeRequest], apiHistoryList);
-    if(response.ok){
+function* fetchHistorySaga({ apiClient }) {
+  try {
+    const doctorId = window.localStorage.getItem("doctorId");
+    const response = yield call([apiClient, apiClient.makeRequest], apiHistoryList, 'GET', {
+      doctorId: doctorId,
+    });
+    if (response.ok) {
       yield put(fetchHistorySuccess(response.data));
-    }else{
+    } else {
       throw new Error(response.problem || 'Failed to fetch history');
     }
-  }catch(error){
+  } catch (error) {
     console.log("Error occured while fetching history of slots:", error.message);
     yield put(fetchHistoryFailure(error.message));
   }

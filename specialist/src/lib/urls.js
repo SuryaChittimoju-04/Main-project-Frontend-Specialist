@@ -4,6 +4,6 @@ export const apiSignUp = `${BASE_URL}/specialist/register/doctor`;
 export const apiFetchSpecializations = `${BASE_URL}/specialist/specializations`;
 export const apiFetchAvailableSlots =(doctorId)=> `${BASE_URL}/slot/available?doctorId=${doctorId}`;
 export const apiFetchDoctors =(specialization)=> `${BASE_URL}/specialist/doctors?specialization=${specialization}`;
-export const apiFetchSlots = `${BASE_URL}/slot/booked`;
+export const apiFetchSlots = `${BASE_URL}/slot/upcoming`;
 export const apiBookSlot = `${BASE_URL}/slot/book`;
-export const apiHistoryList = `${BASE_URL}/slot/history`;
+export const apiHistoryList = `${BASE_URL}/slot/doc/history`;

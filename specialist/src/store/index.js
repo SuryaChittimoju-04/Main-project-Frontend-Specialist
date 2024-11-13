@@ -12,6 +12,7 @@ const sagaMiddleWare = createSagaMiddleware();
 
 const store = createStore(
   persistedReducer(rootReducer),
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
   composeWithDevTools(
     applyMiddleware(sagaMiddleWare),
     // applyMiddleware(logger),

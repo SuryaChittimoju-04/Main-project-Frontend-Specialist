@@ -35,7 +35,7 @@ const create = (baseURL = "") => {
   const makeRequest = (url, method = "GET", body = {}) => {
     switch (method) {
       case "GET":
-        return api.get(url);
+        return api.get(url, body);
       case "POST":
         return api.post(url, body);
       case "FORM":

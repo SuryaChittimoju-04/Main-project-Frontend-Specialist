@@ -1,12 +1,15 @@
 // src/components/auth/SignupForm.jsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Card from '../ui/Card';
 import Button from '../ui/Button';
 import Input from '../ui/Input';
 import { useNavigate } from 'react-router-dom';
 import { User, Lock, Mail, Stethoscope, PhoneCall, Building } from 'lucide-react';
+import bookings from '../../store/bookings/actions';
+import { useDispatch, useSelector } from 'react-redux';
 
 export const SignupForm = ({ onSignup, onNavigateLogin }) => {
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     hospitalId: '',
     name: '',
@@ -17,6 +20,15 @@ export const SignupForm = ({ onSignup, onNavigateLogin }) => {
     specialization: '',
     isAffiliated: false,
   });
+  const [specialization, setSpecialization] = useState([]);
+  const bookingData = useSelector((state) => state.bookings.specializations?.data);
+  useEffect(() => {
+    if (bookingData) {
+      setSpecialization(bookingData.data);
+    } else {
+      dispatch(bookings.fetchSpecializations());
+    }
+  }, [dispatch, bookingData]);
 
   const navigate = useNavigate();
 
@@ -64,8 +76,8 @@ export const SignupForm = ({ onSignup, onNavigateLogin }) => {
             <Input
               type="password"
               placeholder="Enter Password"
-              value={formData.dob}
-              onChange={(e) => setFormData({ ...formData, dob: e.target.value })}
+              value={formData.password}
+              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
               required
               className="pl-10"
             />
@@ -77,7 +89,7 @@ export const SignupForm = ({ onSignup, onNavigateLogin }) => {
               className="pl-10"
               placeholder="Phone Number"
               value={formData.phone}
-              onChange={(e) => setFormData({ ...formData, phone: e.target.value.replace(/\D/g, '') })}
+              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
               maxLength={10}
               required
             />
@@ -97,27 +109,27 @@ export const SignupForm = ({ onSignup, onNavigateLogin }) => {
           </div>
           <div className='relative'>
             <select className="w-full p-2 pl-10 border border-gray-300 rounded mt-1"
-              value={formData.gender}
-              onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
+              value={formData.specialization}
+              onChange={(e) => setFormData({ ...formData, specialization: e.target.value })}
               required>
               <option value="">Specialization</option>
-              {[{ gender: "Male" }, { gender: "Female" }].map((gender) => (
-                <option value={gender.gender} key={gender.gender}>{gender.gender}</option>
+              {specialization.length>0 && specialization.map((spec) => (
+                <option value={spec.id} key={spec.id}>{spec.specialization}</option>
               ))}
             </select>
             <Stethoscope className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
           </div>
           <div className='relative'>
             <select className="w-full p-2 pl-10 border border-gray-300 rounded mt-1"
-              value={formData.gender}
-              onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
+              value={formData.isAffiliated}
+              onChange={(e) => setFormData({ ...formData, isAffiliated: e.target.value })}
               required>
               <option value="">Is Affiliated</option>
-              {[{ gender: "Male" }, { gender: "Female" }].map((gender) => (
-                <option value={gender.gender} key={gender.gender}>{gender.gender}</option>
+              {[{ value: true }, { value: false }].map((isAff) => (
+                <option value={isAff.value} key={isAff.value}>{String(isAff.value)}</option>
               ))}
             </select>
-              <Building className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+            <Building className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
           </div>
           <Button type="submit" className="w-full">Register</Button>
           <p className="text-center">

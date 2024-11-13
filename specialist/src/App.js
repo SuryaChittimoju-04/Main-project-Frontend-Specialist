@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
@@ -8,13 +8,14 @@ import auth from './store/auth/actions';
 
 const App = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth.userData);
-  const [userData, setUserData] = useState(user);
+  // const user = useSelector((state) => state.auth.userData);
+  const doctor = window.localStorage.getItem("doctorId");
+  const [userData, setUserData] = useState(doctor);
   useEffect(() => {
-    if (user) {
-      setUserData(user);
+    if (doctor) {
+      setUserData(doctor);
     }
-  }, [user]);
+  }, [doctor]);
 
   const handleSignup = (data) => {
     dispatch(auth.signupRequest(data));
@@ -22,7 +23,8 @@ const App = () => {
 
   const handleLogout = () => {
     setUserData(null);
-    window.localStorage.removeItem("api_token");
+    window.localStorage.removeItem("userName");
+    window.localStorage.removeItem("doctorId");
   };
 
   return (

@@ -4,7 +4,6 @@ import Header from '../components/layout/Header';
 import { HealthRecordCard } from '../components/dashboard/HealthRecordCard';
 import { ScheduleCard } from '../components/dashboard/ScheduleCard';
 import { RecentActivity } from '../components/dashboard/RecentActivity';
-import { AppointmentCard } from '../components/dashboard/Appointment';
 import BookingPopup from '../components/dashboard/BookingPopup';
 import { useDispatch, useSelector } from 'react-redux';
 import Slots from '../store/slots/actions';
@@ -36,7 +35,7 @@ const Home = ({ onLogout }) => {
     }
   }, [slotsData]);
 
-  const handleBook = () => setIsBookingInProgress(true);
+  // const handleBook = () => setIsBookingInProgress(true);
   const closeBookingPopup = () => setIsBookingInProgress(false);
 
   const submitBooking = (bookingData) => {
@@ -60,7 +59,7 @@ const Home = ({ onLogout }) => {
 
         <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 px-4 sm:px-0">
           <HealthRecordCard />
-          <AppointmentCard onBook={handleBook} />
+          {/* <AppointmentCard onBook={handleBook} /> */}
           <ScheduleCard slots={slotsData.upComingSlotsData?.data} fetchSlots={fetchSlots}/>
         </div>
 
