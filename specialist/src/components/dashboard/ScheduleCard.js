@@ -40,12 +40,12 @@ export const ScheduleCard = ({ fetchSlots, slots }) => {
             <Clock className="h-6 w-6 text-purple-600" />
           </div>
           <div className="ml-4">
-            <h3 className="text-lg font-medium text-gray-900">{isDoc ? 'Add Records' : 'Upcoming Appointments'}</h3>
-            <p className="text-sm text-gray-500">{isDoc ? 'Create Records' : 'View scheduled visits'}</p>
+            <h3 className="text-lg font-medium text-gray-900">{isDoc ? 'Upcoming Appointments' : 'Add Records'}</h3>
+            <p className="text-sm text-gray-500">{isDoc ? 'View scheduled visits' : 'Create New Records'}</p>
           </div>
         </div>
         <div className="mt-6">
-          <Button className="w-full" onClick={fetchSlots}>{isDoc ? 'Upload Record' : 'View Schedule'}</Button>
+          <Button className="w-full" onClick={fetchSlots}>{isDoc ? 'View Schedule' : 'Upload Record'}</Button>
         </div>
         <div className='flex flex-col gap-4'>
           {slots && slots.map((slot, index) => (
